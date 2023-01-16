@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Blood Requests{% endblock title %}
+{% block headtitle %}Blood Requests{% endblock headtitle %}
+{% block bread %}   
+<li class="breadcrumb-item"><a href="{% url 'bloodrequests' %}">Blood Requests</a></li>
+
+{% endblock bread %}   
+{% block content %}
+ 
+    <div class="card shadow p-3 mb-2">
+        <table class="table table-bordered" id="requests">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Phone
+                    </th>
+                    <th>
+                        date
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th>
+                        Blood Group
+                    </th>
+                    <th>
+                        Location
+                    </th>
+                    <th>
+                        Address
+                    </th>
+                    <th>
+                        Hospital
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            {% for request in requests %}
+                <tr>
+                    <td>
+                        {{request.name}}
+                    </td>
+                    <td>
+                        {{request.phone}}
+                    </td>
+                    <td>
+                        {{request.date}}
+                    </td>
+                    <td>
+                        {{request.amount}}
+                    </td>
+                    <td>
+                        {{request.blood_group}}
+                    </td>
+                    <td>
+                        {{request.location.name}}
+                    </td>
+                    <td>
+                        {{request.address}}
+                    </td>
+                    <td>
+                        {{request.hospital}}
+                    </td>
+                    <td>
+                        {{ request.completed|yesno:"Completed,Incomplete,Incomplete" }}
+
+                    </td>
+                </tr>
+                
+            {% endfor %}
+        </table>
+    </div>
+{% endblock content %}
+       
+{% block js %}
+{% include 'dashboard/includes/datatable.html' %}
+<script>
+    $(document).ready( function () {
+        $('#requests').DataTable();
+    } );
+</script>
+{% endblock js %}

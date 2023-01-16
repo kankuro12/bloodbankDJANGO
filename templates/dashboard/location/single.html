@@ -1,0 +1,14 @@
+<form action="{% url 'locations.edit'%}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{location.id}}">
+    <div class="row">
+        <div class="col-md-9">
+            <label for="name">name</label>
+            <input type="text" name="name" id="name" value="{{location.name}}" class="form-control" required>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button class="btn btn-primary w-100">Update Location</button>
+        </div>
+    </div>
+</form>
+<hr>

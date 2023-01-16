@@ -1,0 +1,112 @@
+{% load static %}
+{% block html %}
+    <!DOCTYPE html>
+    <html dir="ltr" lang="en">
+        {% block head %}
+            <head>
+                <title>{% block title %}{% endblock title %}</title>
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <!-- Tell the browser to be responsive to screen width -->
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+              
+                <!-- Favicon icon -->
+                <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png'%}">
+                <!-- Custom CSS -->
+                <link href="{% static 'css/float-chart.css'%}" rel="stylesheet">
+                <!-- Custom CSS -->
+                <link href="{% static 'css/style.min.css'%}" rel="stylesheet">
+                <link href="{% static 'css/custom.css'%}" rel="stylesheet">
+                <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+                <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+                <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+            <![endif]-->
+            `{% block css %}{% endblock css %}`
+
+            </head>
+        {% endblock head %}
+
+        {% block body %}
+        <body>
+            <!-- ============================================================== -->
+            <!-- Preloader - style you can find in spinners.css -->
+            <!-- ============================================================== -->
+            <div class="preloader">
+                <div class="lds-ripple">
+                    <div class="lds-pos"></div>
+                    <div class="lds-pos"></div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- Main wrapper - style you can find in pages.scss -->
+            <!-- ============================================================== -->
+            <div id="main-wrapper">
+                {% include 'dashboard/includes/header.html' %}
+                {% include 'dashboard/includes/sidebar.html' %}
+                <div class="page-wrapper">
+                    <!-- ============================================================== -->
+                    <!-- Bread crumb and right sidebar toggle -->
+                    <!-- ============================================================== -->
+                    <div class="page-breadcrumb">
+                        <div class="row">
+                            <div class="col-12 d-flex no-block align-items-center">
+                                <h4 class="page-title">{% block headtitle %}{% endblock headtitle %}</h4>
+                                <div class="ml-auto text-right">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                                            {% block bread %}{% endblock bread %}
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- End Bread crumb and right sidebar toggle -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- Container fluid  -->
+                    <!-- ============================================================== -->
+                    <div class="container-fluid">
+                        {% block content %}{% endblock content %}
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Wrapper -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- All Jquery -->
+            <!-- ============================================================== -->
+            <script src="{% static 'js/jquery.min.js'%}"></script>
+            <!-- Bootstrap tether Core JavaScript -->
+            <script src="{% static 'js/popper.min.js'%}"></script>
+            <script src="{% static 'js/bootstrap.min.js'%}"></script>
+            <script src="{% static 'js/perfect-scrollbar.jquery.min.js'%}"></script>
+            <script src="{% static 'js/sparkline.js'%}"></script>
+            <!--Wave Effects -->
+            <script src="{% static 'js/waves.js'%}"></script>
+            <!--Menu sidebar -->
+            <script src="{% static 'js/sidebarmenu.js'%}"></script>
+            <!--Custom JavaScript -->
+            <script src="{% static 'js/custom.min.js'%}"></script>
+            <!--This page JavaScript -->
+            <!-- <script src="dist/js/pages/dashboards/dashboard1.js'%}"></script> -->
+            <!-- Charts js Files -->
+            <script src="{% static 'js/excanvas.js'%}"></script>
+            <script src="{% static 'js/jquery.flot.js'%}"></script>
+            <script src="{% static 'js/jquery.flot.pie.js'%}"></script>
+            <script src="{% static 'js/jquery.flot.time.js'%}"></script>
+            <script src="{% static 'js/jquery.flot.stack.js'%}"></script>
+            <script src="{% static 'js/jquery.flot.crosshair.js'%}"></script>
+            <script src="{% static 'js/jquery.flot.tooltip.min.js'%}"></script>
+            <script src="{% static 'js/chart-page-init.js'%}"></script>
+            {% block js %}{% endblock js %}
+        </body>
+        {% endblock body %}
+    </html>
+{% endblock html %}

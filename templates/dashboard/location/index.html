@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Locations{% endblock title %}
+{% block headtitle %}Locations{% endblock headtitle %}
+{% block bread %}   
+<li class="breadcrumb-item"><a href="{% url 'locations' %}">Locations</a></li>
+
+{% endblock bread %}   
+{% block content %}
+    <div class="card shadow p-3 mb-2">
+
+        <form action="{% url 'locations.add'%}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-9">
+                    <label for="name">name</label>
+                    <input type="text" name="name" id="name" class="form-control" required>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button class="btn btn-primary w-100">Add Location</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card shadow p-3 mb-2">
+        {% for location in locations %}
+            {% include 'dashboard/location/single.html' with location=location %}
+            
+        {% endfor %}
+    </div>
+{% endblock content %}
+       
