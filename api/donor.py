@@ -4,7 +4,8 @@ from rest_framework import status
 from rest_framework.decorators import (api_view, permission_classes)
 from rest_framework.permissions import IsAuthenticated
 from models.models import Donor,Location,BloodRequest
-from models.serializer import DonorSerializer,BloodRequestSerializer
+from models.serializer import DonorSerializer,BloodRequestSerializer,BloodRequestListSerializer
+from datetime import datetime,timedelta
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -62,4 +63,40 @@ def addBloodRequest(req):
     return Response((BloodRequestSerializer(request)).data)
     
     # request.
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def getDonors(req):
+    
+    location=Location.objects.filter(id=req.POST['location']).first()
+    blood_group=req.POST['blood_request']
+    date = datetime.now()
+    ninety_days_ago =( date - timedelta(days=90)).date()
+    donors=Donor.objects.filter(location=location,blood_group=blood_group,last_donated__lte=ninety_days_ago)
+    alldatas=[]
+    for donor in donors:
+        alldatas.append((DonorSerializer(donor)).data)
+    return Response(alldatas)
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def getBloodRequest(req):
+    type=req.GET['type']  
+    if type=="1":
+        location=Location.objects.filter(id=req.POST['location']).first()
+        blood_group=req.POST['blood_request']
+        date = datetime.now().date()
+        requests=BloodRequest.objects.filter(location=location,date__gte=date,blood_group=blood_group).order_by('date')
+    if type=="2":
+        location=Location.objects.filter(id=req.POST['location']).first()
+        blood_group=req.POST['blood_request']
+        date = datetime.now().date()
+        requests=BloodRequest.objects.filter(location=location,date=date,blood_group=blood_group)       
+
+    alldatas=[]
+    for request in requests:
+        alldatas.append((BloodRequestSerializer(request)).data)
+    return Response(alldatas)
+    
+    
     

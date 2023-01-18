@@ -13,10 +13,15 @@ class BloodRequestSerializer(serializers.ModelSerializer):
     location_name=serializers.CharField(source='location.name')
     fname=serializers.CharField(source='user.first_name')
     lname=serializers.CharField(source='user.last_name')
+    user_id=serializers.CharField(source='user.id')
     class Meta:
         model = BloodRequest
-        fields = ('id', 'name','phone', 'hospital', 'address', 'blood_group','location_name','amount','fname','lname')
-        
+        fields = ('id', 'name','phone','user_id', 'hospital', 'address', 'blood_group','location_name','amount','fname','lname')
+class BloodRequestListSerializer(serializers.ListSerializer):
+    child = BloodRequestSerializer()
+    allow_null = True
+    many = True
+      
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

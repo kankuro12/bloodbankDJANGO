@@ -36,7 +36,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 
-CSRF_TRUSTED_ORIGINS = ["https://4ff2-27-34-17-145.ngrok.io"]
+CSRF_TRUSTED_ORIGINS = ["https://d7a1-27-34-17-12.ngrok.io"]
 
 
 # Application definition

@@ -13,10 +13,12 @@ urlpatterns = [
     path('locations',general.locations),
     
     path('donor',donor.index),
+    path('donor/list',donor.getDonors),
     path('donor/changeStatus',donor.changeStatus),
     
     
     path('request/add',donor.addBloodRequest),
+    path('request/list',donor.getBloodRequest),
     
     
     
