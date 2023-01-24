@@ -5,9 +5,11 @@ from django.contrib.auth.models import User
 #Donor Serializer
 class DonorSerializer(serializers.ModelSerializer):
     location_name=serializers.CharField(source='location.name')
+    user_id=serializers.CharField(source='user.id')
+    
     class Meta:
         model = Donor
-        fields = ('id', 'phone', 'dob', 'address', 'location', 'blood_group','location_name')
+        fields = ('id', 'phone', 'dob', 'address', 'location', 'blood_group','location_name','user_id')
 #request Serializer
 class BloodRequestSerializer(serializers.ModelSerializer):
     location_name=serializers.CharField(source='location.name')

@@ -32,5 +32,15 @@ class BloodRequest(models.Model):
     address = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     completed=models.BooleanField(default=False)
+
+class Chat(models.Model):
+    id=models.AutoField(primary_key=True)
+    ident=models.CharField(max_length=50)
+    senderName=models.CharField(max_length=50)
+    receiverName=models.CharField(max_length=50)
+    from_id=models.IntegerField(null=True)
+    to_id=models.IntegerField(null=True)
+    message=models.TextField()
+    
     
 

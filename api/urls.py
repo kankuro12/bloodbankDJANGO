@@ -1,14 +1,14 @@
 from django.urls import path
-from . import views,general,donor
+from . import views,general,donor,chat
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 urlpatterns = [
     path('register/', views.register),
-    path('load/', views.load),
+    path('user/', views.user),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
     
     path('locations',general.locations),
     
@@ -20,6 +20,8 @@ urlpatterns = [
     path('request/add',donor.addBloodRequest),
     path('request/list',donor.getBloodRequest),
     
-    
+    path('chats',chat.list),
+    path('chats/add',chat.add),
+    path('chats/single',chat.single),
     
 ]

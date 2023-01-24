@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
-
+from models.models import Donor
 
 @api_view(['GET', 'POST'])
 def register(req):
@@ -44,5 +44,13 @@ def register(req):
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
-def load(request):
-    return Response({"Asdfsda": "ASdfasdf"})
+def user(req):
+    user= req.user
+    donor = Donor.objects.filter(user=user.id).first()
+    
+    return Response({"fname": user.first_name,
+                     'lname':user.last_name,
+                     "id":user.id,
+                     "username":user.username,
+                     "has_donor":donor!= None
+                    })
