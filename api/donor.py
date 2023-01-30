@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from models.models import Donor,Location,BloodRequest
 from models.serializer import DonorSerializer,BloodRequestSerializer,BloodRequestListSerializer
 from datetime import datetime,timedelta
-
+import json;
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def index(req):
@@ -21,14 +21,16 @@ def index(req):
     elif req.method == 'POST':
         if donor == None: 
             donor= Donor()
-        location=Location.objects.filter(id=req.POST['location']).first()
-        donor.phone=req.POST['phone']
-        donor.address=req.POST['address']
+            
+        data=json.loads(req.body)
+        location=Location.objects.filter(id=data['location']).first()
+        donor.phone=data['phone']
+        donor.address=data['address']
         donor.location=location
         donor.user=user
-        donor.blood_group=req.POST['blood_group']
-        donor.dob=req.POST['dob']
-        donor.last_donated=req.POST['last_donated']
+        donor.blood_group=data['blood_group']
+        donor.dob=data['dob']
+        donor.last_donated=data['last_donated']
         donor.save()
         return Response((DonorSerializer(donor)).data)
 
@@ -39,7 +41,9 @@ def changeStatus(req):
     donor = Donor.objects.filter(user=user.id).first()
     if donor == None:
         return Response({"error":"No Donor For User"}, status=status.HTTP_406_NOT_ACCEPTABLE)
-    donor.status=req.POST['status']
+    
+    data=json.loads(req.body)
+    donor.status=data['status']
     donor.save()
     return Response({"message":"status changed sucessfully"})
 
@@ -47,17 +51,17 @@ def changeStatus(req):
 @permission_classes([IsAuthenticated])
 def addBloodRequest(req):
     user= req.user
-    location=Location.objects.filter(id=req.POST['location']).first()
-    
+    data=json.loads(req.body)
+    location=Location.objects.filter(id=data['location']).first()
     request=BloodRequest()
-    request.name=req.POST['name']
-    request.blood_group=req.POST['blood_group']
-    request.amount=req.POST['amount']
-    request.date=req.POST['date']
-    request.hospital=req.POST['hospital']
+    request.name=data['name']
+    request.blood_group=data['blood_group']
+    request.amount=data['amount']
+    request.date=data['date']
+    request.hospital=data['hospital']
     request.location=location
-    request.address=req.POST['address']
-    request.phone=req.POST['phone']
+    request.address=data['address']
+    request.phone=data['phone']
     request.user=user
     request.save()
     return Response((BloodRequestSerializer(request)).data)
@@ -67,9 +71,9 @@ def addBloodRequest(req):
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def getDonors(req):
-    
-    location=Location.objects.filter(id=req.POST['location']).first()
-    blood_group=req.POST['blood_request']
+    data=json.loads(req.body)
+    location=Location.objects.filter(id=data['location']).first()
+    blood_group=data['blood_request']
     date = datetime.now()
     ninety_days_ago =( date - timedelta(days=90)).date()
     donors=Donor.objects.filter(location=location,blood_group=blood_group,last_donated__lte=ninety_days_ago)
@@ -82,21 +86,23 @@ def getDonors(req):
 @permission_classes([IsAuthenticated])
 def getBloodRequest(req):
     type=req.GET['type']  
+    data=json.loads(req.body)
+    
     if type=="1":
-        location=Location.objects.filter(id=req.POST['location']).first()
-        blood_group=req.POST['blood_request']
+        location=Location.objects.filter(id=data['location']).first()
+        blood_group=data['blood_request']
         date = datetime.now().date()
         requests=BloodRequest.objects.filter(location=location,date__gte=date,blood_group=blood_group).order_by('date')
     if type=="2":
-        location=Location.objects.filter(id=req.POST['location']).first()
-        blood_group=req.POST['blood_request']
+        
         date = datetime.now().date()
-        requests=BloodRequest.objects.filter(location=location,date=date,blood_group=blood_group)       
+        requests=BloodRequest.objects.filter(date=date)       
 
     alldatas=[]
     for request in requests:
         alldatas.append((BloodRequestSerializer(request)).data)
     return Response(alldatas)
+    
     
     
     

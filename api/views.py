@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status
-
+import json;
 from rest_framework.decorators import (api_view, permission_classes)
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
@@ -10,13 +10,14 @@ from models.models import Donor
 
 @api_view(['GET', 'POST'])
 def register(req):
+    data=json.loads(req.body)
     # request
-    username = req.POST['username']
-    fname = req.POST['fname']
-    lname = req.POST['lname']
-    email = req.POST['email']
-    password = req.POST['password']
-    confirm_password = req.POST['confirm_password']
+    username = data['username']
+    fname = data['fname']
+    lname = data['lname']
+    email = data['email']
+    password = data['password']
+    confirm_password = data['confirm_password']
 
     if User.objects.filter(username=username):
         return Response({"error":"Username already exist! Please try some other username"}, status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -54,3 +55,5 @@ def user(req):
                      "username":user.username,
                      "has_donor":donor!= None
                     })
+
+
