@@ -5,7 +5,7 @@ from rest_framework.decorators import (api_view, permission_classes)
 from rest_framework.permissions import IsAuthenticated
 from models.models import Chat
 from django.contrib.auth.models import User
-
+import json;
 from django.db import connection
 
 @api_view(['GET', 'POST'])
@@ -25,9 +25,10 @@ def list(req):
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def add(req):
+    data=json.loads(req.body)
     user=req.user
     from_id=user.id
-    to_id=int(req.POST['to_id'])
+    to_id=int(data['to_id'])
     ident="{}_{}".format(from_id,to_id)
     if to_id<from_id :
         ident="{}_{}".format(to_id,from_id)
@@ -38,7 +39,7 @@ def add(req):
     chat.to_id=to_id
     chat.senderName=user.first_name
     chat.receiverName=toUser.first_name
-    chat.message=req.POST['msg']
+    chat.message=data['msg']
     chat.save()
     chats=Chat.objects.filter(ident=ident).values()
     return Response(chats)
@@ -46,9 +47,10 @@ def add(req):
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def single(req):
+    data=json.loads(req.body)
     user=req.user
     from_id=user.id
-    to_id=int(req.POST['to_id'])
+    to_id=int(data['to_id'])
     ident="{}_{}".format(from_id,to_id)
     if to_id<from_id :
         ident="{}_{}".format(to_id,from_id)
